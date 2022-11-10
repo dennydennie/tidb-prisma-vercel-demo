@@ -1,27 +1,23 @@
-import * as React from "react";
-import Link from "next/link";
-import Image from "next/image";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
+import IconButton from "@mui/material/IconButton";
 import Rating from "@mui/material/Rating";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { VariantType, useSnackbar } from "notistack";
+import Typography from "@mui/material/Typography";
+import Image from "next/image";
+import Link from "next/link";
+import { useSnackbar } from "notistack";
 
 import { shoppingCartState } from "atoms";
 import { useRecoilState } from "recoil";
 
-import { BookProps } from "const";
-import { currencyFormat } from "lib/utils";
+import { HouseProps } from "const";
 
-export default function BasicCard(props: BookProps) {
-  const { id, title, type, price, averageRating, authors, ratings, stock } =
-    props;
+export default function BasicCard(props: HouseProps) {
+  const { id } = props;
   const [shoppingCart, setShoppingCart] = useRecoilState(shoppingCartState);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -76,7 +72,8 @@ export default function BasicCard(props: BookProps) {
       <Box>
         <CardMedia>
           <Image
-            src={`https://picsum.photos/seed/${id}/200/300`}
+            //load image src
+            src={``}
             alt={title}
             width={254}
             height={140}
@@ -92,31 +89,13 @@ export default function BasicCard(props: BookProps) {
               {type.replaceAll(`_nbsp_`, ` `).replaceAll(`_amp_`, `&`)}
             </Typography>
           )}
-          <Link href={`/book/${id}`}>
+          <Link href={`/house/${id}`}>
             <Typography variant="h5" component="div" sx={{ cursor: "pointer" }}>
               {title}
             </Typography>
           </Link>
 
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {authors.map((author) => author.author.name).join(`, `)}
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Rating
-              name="read-only"
-              precision={0.5}
-              value={averageRating}
-              size="small"
-              readOnly
-            />
-            <Typography
-              component="div"
-              variant="body2"
-              sx={{ color: "#616161" }}
-            >
-              {ratings}
-            </Typography>
-          </Box>
+          <Typography sx={{ mb: 1.5 }} color="text.secondary"></Typography>
         </CardContent>
       </Box>
       <CardActions>
@@ -129,19 +108,6 @@ export default function BasicCard(props: BookProps) {
         >
           <AddShoppingCartIcon />
         </IconButton>
-        <Typography
-          variant="h5"
-          sx={{ marginLeft: "auto", marginRight: "8px" }}
-        >
-          <Typography
-            component="span"
-            variant="body2"
-            sx={{ paddingRight: 0.5 }}
-          >
-            $
-          </Typography>
-          {currencyFormat(price)}
-        </Typography>
       </CardActions>
     </Card>
   );

@@ -19,13 +19,8 @@ import {
   useSetRecoilState,
   useRecoilValueLoadable,
 } from "recoil";
-import { bookTypeListState, homePageQueryState } from "atoms";
-
-import { fetchBookTypes } from "lib/http";
 
 const BookTypeComponent = (props: { loading: boolean; data: string[] }) => {
-  const [homePageQueryData, setHomePageQueryData] =
-    useRecoilState(homePageQueryState);
   return (
     <>
       <List>
@@ -40,26 +35,7 @@ const BookTypeComponent = (props: { loading: boolean; data: string[] }) => {
           </>
         )}
         {props.data.map((bookType) => (
-          <ListItem key={bookType} disablePadding>
-            <ListItemButton
-              onClick={() => {
-                // setBookType(bookType);
-                // setHomePageIdx(1);
-                setHomePageQueryData({
-                  ...homePageQueryData,
-                  page: 1,
-                  type: bookType,
-                });
-              }}
-              selected={homePageQueryData.type === bookType}
-            >
-              <ListItemText
-                primary={bookType
-                  .replaceAll(`_nbsp_`, ` `)
-                  .replaceAll(`_amp_`, `&`)}
-              />
-            </ListItemButton>
-          </ListItem>
+          <ListItem key={bookType} disablePadding></ListItem>
         ))}
       </List>
     </>
@@ -67,29 +43,16 @@ const BookTypeComponent = (props: { loading: boolean; data: string[] }) => {
 };
 
 const SortComponent = () => {
-  const [homePageQueryData, setHomePageQueryData] =
-    useRecoilState(homePageQueryState);
-  const SORT_VALUE = ["published_at", "price"];
   return (
     <>
       <List>
         <ListSubheader>{`Sort By`}</ListSubheader>
-        {SORT_VALUE.map((sortType) => (
-          <ListItem key={sortType} disablePadding>
-            <ListItemButton
-              onClick={() => {
-                setHomePageQueryData({
-                  ...homePageQueryData,
-                  page: 1,
-                  sort: sortType,
-                });
-              }}
-              selected={homePageQueryData.sort === sortType}
-            >
-              <ListItemText primary={sortType} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemText />
+          </ListItemButton>
+        </ListItem>
       </List>
     </>
   );
@@ -97,29 +60,8 @@ const SortComponent = () => {
 
 export default function BasicList(props: { className?: string }) {
   const [checked, setChecked] = React.useState([0]);
-  const [loadingBookType, setLoadingBookType] = React.useState(false);
-
-  const [bookTypeList, setBookTypeList] = useRecoilState(bookTypeListState);
 
   const { enqueueSnackbar } = useSnackbar();
-
-  React.useEffect(() => {
-    const func = async () => {
-      setLoadingBookType(true);
-      const res = await fetchBookTypes();
-      const { error, content } = res;
-      if (error) {
-        setLoadingBookType(false);
-        enqueueSnackbar(`Error: Fetch Book Types`, {
-          variant: "error",
-        });
-        return;
-      }
-      setBookTypeList(content);
-      setLoadingBookType(false);
-    };
-    !bookTypeList.length && func();
-  });
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -140,7 +82,6 @@ export default function BasicList(props: { className?: string }) {
       className={props.className}
     >
       <nav aria-label="main mailbox folders">
-        <BookTypeComponent loading={loadingBookType} data={bookTypeList} />
         <SortComponent />
 
         {/* <List>

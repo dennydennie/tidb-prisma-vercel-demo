@@ -1,12 +1,23 @@
 import axios from "axios";
-import { BookProps, BookDetailProps, BookRatingsProps } from "const";
+import {
+  ForgotPassword,
+  HouseProps,
+  ResetPassword,
+  Subscription,
+  UserType,
+} from "const";
+import { getCookie } from "cookies-next";
 
-export async function fetchBooks(data: {
+const header = {
+  Authorization: getCookie("accessToke"),
+};
+
+export async function fetchHouses(data: {
   page?: number;
   size?: number;
   type?: string;
   sort?: string;
-}): Promise<{ content: BookProps[]; total: number; error?: any }> {
+}): Promise<{ content: HouseProps[]; total: number; error?: any }> {
   try {
     const queryArray = Object.keys(data).reduce((prev: string[], item) => {
       const value = data[item as keyof typeof data];
@@ -15,7 +26,7 @@ export async function fetchBooks(data: {
       }
       return prev;
     }, []);
-    const response = await axios.get(`/api/books?${queryArray.join(`&`)}`);
+    const response = await axios.get(`/houses?${queryArray.join(`&`)}`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -26,63 +37,50 @@ export async function fetchBooks(data: {
   }
 }
 
-export async function fetchBookTypes(): Promise<{
-  content: string[];
+export async function createHouse(
+  house: HouseProps,
+  user: UserType
+): Promise<{
+  content?: { data: HouseProps; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.get(`/api/books/types`);
-    if (response.status !== 200) {
-      throw new Error(`${response.status} - ${response.data}`);
-    }
-    return { content: response.data as string[] };
-  } catch (error) {
-    console.error(error);
-    return { error, content: [] };
-  }
-}
-
-export async function fetchBookDetailsById(id: string): Promise<{
-  content: BookDetailProps;
-  error?: any;
-}> {
-  try {
-    const response = await axios.get(`/api/books/${id}`);
-    if (response.status !== 200) {
-      throw new Error(`${response.status} - ${response.data}`);
-    }
-    return { content: response.data as BookDetailProps };
-  } catch (error) {
-    console.error(error);
-    return { error, content: {} as BookDetailProps };
-  }
-}
-
-export async function fetchBookRatingsById(id: string): Promise<{
-  content: { content: BookRatingsProps[]; total: number };
-  error?: any;
-}> {
-  try {
-    const response = await axios.get(`/api/books/${id}/ratings`);
+    const response = await axios.post(`/houses`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
     return { content: response.data };
   } catch (error) {
     console.error(error);
-    return { error, content: { content: [], total: 0 } };
+    return { error };
   }
 }
 
-export async function updateBookDetails(
+export async function fetchHouseDetailsById(id: string): Promise<{
+  content: HouseProps;
+  error?: any;
+}> {
+  try {
+    const response = await axios.get(`/houses/${id}`);
+    if (response.status !== 200) {
+      throw new Error(`${response.status} - ${response.data}`);
+    }
+    return { content: response.data as HouseProps };
+  } catch (error) {
+    console.error(error);
+    return { error, content: {} as HouseProps };
+  }
+}
+
+export async function updateHouseDetail(
   id: string,
-  params: Partial<BookDetailProps>
+  params: Partial<HouseProps>
 ): Promise<{
-  content?: { data: BookDetailProps; message: string };
+  content?: { data: HouseProps; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.put(`/api/books/${id}`, params);
+    const response = await axios.put(`/houses/${id}`, params);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -93,17 +91,16 @@ export async function updateBookDetails(
   }
 }
 
-export async function addRatingByBookID(
-  bookID: string,
-  params: {
-    score: number;
-  }
-): Promise<{
-  content?: { data: Omit<BookRatingsProps, "user">; message: string };
+export async function createSubscription(subscription: Subscription): Promise<{
+  content?: { data: HouseProps; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.post(`/api/books/${bookID}/ratings`, params);
+    const data = {
+      user: subscription.user,
+      paymentReference: subscription.paymentReference,
+    };
+    const response = await axios.post(`/subscriptions`, data);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -114,17 +111,15 @@ export async function addRatingByBookID(
   }
 }
 
-export async function deleteRating(
-  bookID: string,
-  userID: string
+export async function createHouseRequest(
+  house: HouseProps,
+  user: UserType
 ): Promise<{
-  content?: { message: string };
+  content?: { data: HouseProps; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.delete(
-      `/api/books/${bookID}/ratings?userId=${userID}`
-    );
+    const response = await axios.post(`/houses`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }
@@ -135,17 +130,44 @@ export async function deleteRating(
   }
 }
 
-export async function buyBook(
-  bookID: string,
-  params: { userID: string; quality: number }
-): Promise<{
-  content?: { message: string };
+export async function verifyPhone(verifyPhoneOTP: string): Promise<{
+  content?: { data: HouseProps; message: string };
   error?: any;
 }> {
   try {
-    const response = await axios.post(
-      `/api/books/${bookID}/buy?userId=${params.userID}&quality=${params.quality}`
-    );
+    const response = await axios.post(`/houses`);
+    if (response.status !== 200) {
+      throw new Error(`${response.status} - ${response.data}`);
+    }
+    return { content: response.data };
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
+}
+
+export async function resetPassword(resetPassword: ResetPassword): Promise<{
+  content?: { data: HouseProps; message: string };
+  error?: any;
+}> {
+  try {
+    const response = await axios.post(`/reset-password`);
+    if (response.status !== 200) {
+      throw new Error(`${response.status} - ${response.data}`);
+    }
+    return { content: response.data };
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
+}
+
+export async function forgotPassword(forgotPassword: ForgotPassword): Promise<{
+  content?: { data: HouseProps; message: string };
+  error?: any;
+}> {
+  try {
+    const response = await axios.post(`/reset-password`);
     if (response.status !== 200) {
       throw new Error(`${response.status} - ${response.data}`);
     }

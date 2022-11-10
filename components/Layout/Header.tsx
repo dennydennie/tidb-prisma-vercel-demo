@@ -1,29 +1,23 @@
-import * as React from "react";
-import Link from "next/link";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import SearchIcon from "@mui/icons-material/Search";
+import AppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { alpha, styled } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Link from "next/link";
+import * as React from "react";
 
-import { shoppingCartState } from "atoms";
 import { useRecoilState } from "recoil";
 
-import { calcCartItemSum } from "lib/utils";
+import { House, OtherHouses } from "@mui/icons-material";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -70,7 +64,6 @@ export default function PrimarySearchAppBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
-  const [shoppingCart, setShoppingCart] = useRecoilState(shoppingCartState);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -151,7 +144,7 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Link href="/">
-            <MenuBookIcon sx={{ display: { md: "flex" }, mr: 1 }} />
+            <House sx={{ display: { md: "flex" }, mr: 1 }} />
           </Link>
           <Link href="/">
             <Typography
@@ -169,7 +162,7 @@ export default function PrimarySearchAppBar() {
                 cursor: "pointer",
               }}
             >
-              Bookstore
+              Nyumba Yanga
             </Typography>
           </Link>
 
@@ -190,12 +183,7 @@ export default function PrimarySearchAppBar() {
                 aria-label="show 4 new mails"
                 color="inherit"
               >
-                <Badge
-                  badgeContent={calcCartItemSum(shoppingCart)}
-                  color="error"
-                >
-                  <ShoppingCartCheckoutIcon />
-                </Badge>
+                <OtherHouses />
               </IconButton>
             </Link>
             <IconButton

@@ -1,49 +1,55 @@
-export type AuthorType = {
+import { Stream } from "stream";
+
+export type UserType = {
   id: string;
   name: string;
+  email: string;
+  phone: string;
 };
 
-export interface BookProps {
+export interface HouseProps {
   id: string;
-  title: string;
-  type: string;
-  publishedAt: string;
-  stock: number;
-  price: string;
-  authors: { author: AuthorType }[];
-  averageRating: number;
-  ratings: number;
+  photo: Stream;
+  rentalFee: number;
+  rentalPeriod: string;
+  billsIncluded: boolean;
+  securityDeposit: number;
+  rooms: number;
+  bathrooms: number;
+  sharing: boolean;
+  hasCouncilWater: boolean;
+  hasBoreholeWater: boolean;
+  hasElectricity: boolean;
+  hasBackupElectricity: boolean;
+  status: string;
+  address: AddressType | undefined;
+  owner: UserType | undefined;
+  hasParkingSpace: boolean;
+  isTilled: boolean;
+  isWalled: boolean;
+  hasOwnEntrance: boolean;
+  hasCelling: boolean;
+  hasBuiltInCupboards: boolean;
+  isRequest: boolean;
 }
 
-export interface shoppingCartItemProps extends BookProps {
-  quantity: number;
-}
-
-export type BookDetailProps = Omit<
-  BookProps,
-  "authors" | "averageRating" | "ratings"
->;
-
-export interface BookRatingsProps {
-  bookId: string;
-  userId: string;
-  score: number;
-  ratedAt: string;
-  user: {
-    id: string;
-    nickname: string;
-  };
-}
-
-export const starLabels: { [index: string]: string } = {
-  0.5: "Useless",
-  1: "Useless+",
-  1.5: "Poor",
-  2: "Poor+",
-  2.5: "Ok",
-  3: "Ok+",
-  3.5: "Good",
-  4: "Good+",
-  4.5: "Excellent",
-  5: "Excellent+",
+export type AddressType = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
 };
+
+export interface ResetPassword {
+  password: string;
+  token: string;
+}
+
+export interface ForgotPassword {
+  email: string;
+}
+
+export interface Subscription {
+  paymentReference: string;
+  user: UserType;
+}
