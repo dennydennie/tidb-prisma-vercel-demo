@@ -1,26 +1,16 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import InboxIcon from "@mui/icons-material/Inbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
 import ListSubheader from "@mui/material/ListSubheader";
-import Checkbox from "@mui/material/Checkbox";
-import { VariantType, useSnackbar } from "notistack";
 import Skeleton from "@mui/material/Skeleton";
+import { useSnackbar } from "notistack";
+import * as React from "react";
 
-import {
-  useRecoilState,
-  useRecoilValue,
-  useSetRecoilState,
-  useRecoilValueLoadable,
-} from "recoil";
 
-const BookTypeComponent = (props: { loading: boolean; data: string[] }) => {
+
+const BrowseHousesComponent = (props: { loading: boolean; data: string[] }) => {
   return (
     <>
       <List>
@@ -31,6 +21,7 @@ const BookTypeComponent = (props: { loading: boolean; data: string[] }) => {
               <Skeleton
                 sx={{ margin: "0 1rem", width: "100%", height: "3rem" }}
               />
+              {'Here'}
             </ListItem>
           </>
         )}
@@ -61,7 +52,6 @@ const SortComponent = () => {
 export default function BasicList(props: { className?: string }) {
   const [checked, setChecked] = React.useState([0]);
 
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);

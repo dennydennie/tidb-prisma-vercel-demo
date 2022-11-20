@@ -53,3 +53,5 @@ export interface Subscription {
   paymentReference: string;
   user: UserType;
 }
+export const token =
+  "1eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODU4MjhhNC0wZDM4LTRmODktYTg3Ni1jMjAzODVmYjI4OTciLCJpYXQiOjE2Njg4NTY0NDcsImV4cCI6MTY2ODg2NjA0N30.RTmlya2ggUyqmMCcvrUgqbCWYaxSCcm740-1YFsRhZI";

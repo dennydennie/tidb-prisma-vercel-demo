@@ -2,7 +2,6 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
@@ -15,9 +14,8 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import * as React from "react";
 
-import { useRecoilState } from "recoil";
-
-import { House, OtherHouses } from "@mui/icons-material";
+import { House, Roofing } from "@mui/icons-material";
+import { deleteCookie } from "cookies-next";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -61,9 +59,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const domain: string = process.env.NEXT_PUBLIC_DOMAIN;
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
-
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -79,6 +77,10 @@ export default function PrimarySearchAppBar() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const handleLogout = () => {
+    deleteCookie("session", { path: "/login", domain });
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -102,12 +104,8 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose} disabled>
-        My account
-      </MenuItem>
-      {/* <Link href="/orders">
-        <MenuItem onClick={handleMenuClose}>Orders</MenuItem>
-      </Link> */}
+      <MenuItem onClick={handleMenuClose}>My Account</MenuItem>
+      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
     </Menu>
   );
 
@@ -115,27 +113,25 @@ export default function PrimarySearchAppBar() {
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      // anchorOrigin={{
-      //   vertical: "top",
-      //   horizontal: "right",
-      // }}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
       id={mobileMenuId}
       keepMounted
-      // transformOrigin={{
-      //   vertical: "top",
-      //   horizontal: "right",
-      // }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <Link href="/cart">
-        <MenuItem>Shopping Cart</MenuItem>
+      <Link href="/houses">
+        <MenuItem>Houses</MenuItem>
       </Link>
       <Divider />
-      <MenuItem disabled>My Account</MenuItem>
-      {/* <Link href="/orders">
-        <MenuItem>Orders</MenuItem>
-      </Link> */}
+      <MenuItem>My Account</MenuItem>
+      <MenuItem onClick={handleLogout}>Log Out</MenuItem>
     </Menu>
   );
 
@@ -177,13 +173,13 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Link href="/cart">
+            <Link href="/houses">
               <IconButton
                 size="large"
                 aria-label="show 4 new mails"
                 color="inherit"
               >
-                <OtherHouses />
+                <Roofing />
               </IconButton>
             </Link>
             <IconButton

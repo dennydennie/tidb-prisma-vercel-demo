@@ -15,7 +15,7 @@ import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import { addRatingByBookID } from "lib/http";
+import { createAccount } from "lib/http";
 
 export default function AlertDialog(props: { bookId: string }) {
   const [open, setOpen] = React.useState(false);
