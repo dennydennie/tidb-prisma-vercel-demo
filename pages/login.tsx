@@ -1,11 +1,10 @@
-import LoginFormDialog from "components/Dialog/LoginDialog";
+import LoginForm from "components/Forms/LoginDialog";
 import CommonLayout from "components/Layout";
 
 import Head from "next/head";
 import styles from "../styles/HomePage.module.css";
 
 function login() {
-
   return (
     <>
       <Head>
@@ -16,14 +15,13 @@ function login() {
 
       <CommonLayout>
         <div className={styles.content}>
-          <main className={styles.main}></main>
+          <main className={styles.main}>
+            <LoginForm />
+          </main>
         </div>
       </CommonLayout>
-      <LoginFormDialog csrfToken={undefined} />
     </>
   );
 }
 
 export default login;
-
-

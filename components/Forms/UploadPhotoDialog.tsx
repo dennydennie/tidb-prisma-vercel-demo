@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
+import { getCookie } from "cookies-next";
 import { Backend } from "lib/backend";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
@@ -13,11 +14,16 @@ import React from "react";
 export default function UploadPhotoDialog() {
   const router = useRouter();
   const [open, setOpen] = React.useState(true);
+  const session = getCookie("session");
   const [isUpdating, setIsUpdating] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const {
     query: { houseId },
   } = router;
+
+  if (!session) {
+    router.push("/login");
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,9 +34,6 @@ export default function UploadPhotoDialog() {
   };
 
   async function handleSubmit(event: any) {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0ODU4MjhhNC0wZDM4LTRmODktYTg3Ni1jMjAzODVmYjI4OTciLCJpYXQiOjE2Njg0NTA4MTQsImV4cCI6MTY2ODQ2MDQxNH0.eNGwL1hEl8Sag_T_5qUBDK0SgfRIW7eEW78s7Ub0kvE";
-    //const token = session.user.accessToken;
     event.preventDefault();
     const file = event?.target.files[0];
 
@@ -44,7 +47,7 @@ export default function UploadPhotoDialog() {
         payload,
         action: "post",
         headers: {
-          Authorization: token,
+          Authorization: session,
         },
       });
       if (res?.data) {
@@ -82,19 +85,11 @@ export default function UploadPhotoDialog() {
 
             <DialogActions>
               <Button
-                color="error"
-                variant="contained"
-                fullWidth
-                onClick={handleClose}
-                disabled={isUpdating}
-              >
-                Cancel
-              </Button>
-              <Button
                 color="primary"
                 variant="contained"
                 fullWidth
-                type="submit"
+                onClick={handleClose}
+                type="button"
               >
                 Finish
               </Button>

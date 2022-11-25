@@ -59,7 +59,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const domain: string = process.env.NEXT_PUBLIC_DOMAIN;
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
 
@@ -80,7 +79,8 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleLogout = () => {
-    deleteCookie("session", { path: "/login", domain });
+    console.log("here");
+    deleteCookie("session");
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

@@ -1,23 +1,19 @@
-import type { NextPage } from "next";
-import Head from "next/head";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import {
-  TableBody,
   Button,
   Card,
-  Grid,
-  TableCell,
-  TableRow,
+  Grid, TableBody, TableCell,
+  TableRow
 } from "@mui/material";
 import CommonLayout from "components/Layout";
-import { token } from "const";
+import { getCookie } from "cookies-next";
 import { Backend } from "lib/backend";
+import type { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "../styles/HomePage.module.css";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { blueGrey } from "@mui/material/colors";
-import { getCookie } from "cookies-next";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -71,7 +67,6 @@ const Home: NextPage = () => {
                 <Grid item xs={2} sm={4} md={4} lg={3} key={house.id}>
                   <Card
                     sx={{
-                      background: blueGrey[300],
                       p: "30px",
                       borderRadius: "10px",
                       border: 2,

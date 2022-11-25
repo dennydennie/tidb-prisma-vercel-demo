@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
-import CreateHouseAddressDialog from "components/Dialog/CreateHouseAddressDialog";
-import CreateHouseOtherDetailsDialog from "components/Dialog/CreateHouseOtherDetailsDialog";
-import CreateHouseRoomsDialog from "components/Dialog/CreateHouseRoomsDialog";
+import CreateHouseAddressForm from "components/Forms/CreateHouseAddress";
+import CreateHouseOtherDetailsDialog from "components/Forms/CreateHouseOtherDetails";
+import CreateHouseRoomsForm from "components/Forms/CreateHouseRooms";
 import CommonLayout from "components/Layout";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
           {/* <LeftNav className={styles.nav} /> */}
           <main className={styles.main}>
             <Box>
-              <CreateHouseRoomsDialog session={undefined} />
+              <CreateHouseRoomsForm session={undefined} />
             </Box>
           </main>
         </div>

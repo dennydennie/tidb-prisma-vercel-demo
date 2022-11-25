@@ -23,6 +23,7 @@
     "cookies-next": "^2.1.1",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",
+    "js-base64": "^3.7.3",
     "jsonwebtoken": "^8.5.1",
     "next": "12.2.2",
     "next-cookie": "^2.8.0",

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import UploadPhotoDialog from "components/Dialog/UploadPhotoDialog";
+import UploadPhotoDialog from "components/Forms/UploadPhotoDialog";
 import CommonLayout from "components/Layout";
 import type { NextPage } from "next";
 import Head from "next/head";

@@ -1,4 +1,4 @@
-import SignupFormDialog from "components/Dialog/SignupDialog";
+import SignupFormDialog from "components/Forms/SignupDialog";
 import CommonLayout from "components/Layout";
 import Head from "next/head";
 import styles from "../styles/HomePage.module.css";
