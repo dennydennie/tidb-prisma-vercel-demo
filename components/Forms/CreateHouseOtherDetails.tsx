@@ -36,6 +36,10 @@ export default function CreateHouseOtherDetailsDialog() {
   const session = getCookie("session");
   const house = useSelector(selectHouseState);
 
+  if (!session) {
+    router.push("/login");
+  }
+
   const formik = useFormik({
     initialValues: {
       hasCouncilWater: false,
@@ -234,7 +238,7 @@ export default function CreateHouseOtherDetailsDialog() {
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps() {
   const session = await getCookie("session");
 
   if (!session) {

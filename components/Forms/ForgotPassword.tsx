@@ -1,4 +1,5 @@
 import EditIcon from "@mui/icons-material/Edit";
+import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -9,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import { setCookie } from "cookies-next";
 import { useFormik } from "formik";
 import { Backend } from "lib/backend";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 import React from "react";
@@ -20,14 +22,9 @@ const validationSchema = yup.object({
     .email()
     .min(15, "Email address too short")
     .required("Email address is required"),
-  password: yup
-    .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-  csrfToken: yup.string(),
 });
 
-export default function LoginForm() {
+export default function ForgotPasswordDialog() {
   const router = useRouter();
   const [isUpdating, setIsUpdating] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -38,9 +35,7 @@ export default function LoginForm() {
 
   const formik = useFormik({
     initialValues: {
-      password: "",
       email: "",
-      csrfToken: "",
     },
     validationSchema: validationSchema,
 
@@ -48,7 +43,7 @@ export default function LoginForm() {
       setIsUpdating(true);
 
       const res = await Backend({
-        endPoint: "/auth/login",
+        endPoint: "/auth/forgot-password",
         action: "post",
         params: null,
         payload: values,
@@ -57,12 +52,12 @@ export default function LoginForm() {
         },
       });
 
-      if (res?.data) {
+      if (res?.status === 200) {
         setCookie("session", res.data.token);
         setIsUpdating(false);
         router.push("/");
       } else {
-        enqueueSnackbar(`Invalid login details.`, {
+        enqueueSnackbar(`Invalid email .`, {
           variant: "error",
         });
 
@@ -74,7 +69,7 @@ export default function LoginForm() {
   return (
     <>
       <div>
-        <DialogTitle>Login</DialogTitle>
+        <DialogTitle>Forgot Password</DialogTitle>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             fullWidth
@@ -87,18 +82,7 @@ export default function LoginForm() {
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
           />
-          <TextField
-            fullWidth
-            variant="standard"
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
+
           <DialogActions>
             <Button
               color="error"
@@ -111,10 +95,15 @@ export default function LoginForm() {
               Cancel
             </Button>
             <Button color="primary" variant="contained" fullWidth type="submit">
-              Login
+              Submit
             </Button>
           </DialogActions>
         </form>
+        <Typography
+          sx={{ textDecoration: "underline", textUnderlineOffset: 1 }}
+        >
+          <a href={"/login"}>Go to login</a>
+        </Typography>
       </div>
     </>
   );

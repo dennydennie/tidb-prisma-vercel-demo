@@ -3,6 +3,9 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -12,6 +15,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import { getCookie } from "cookies-next";
 import { useFormik } from "formik";
 import { Backend } from "lib/backend";
 import { getSession } from "next-auth/react";
@@ -88,7 +92,7 @@ export default function CreateHouseRoomsForm(props: { session: any }) {
       <form onSubmit={formik.handleSubmit}>
         <DialogContent>
           <TextField
-            sx={{ width: { lg: "50%", xs: "100%" } }}
+            sx={{ width: { lg: "50%", xs: "100%" }, mt: "1rem" }}
             variant="standard"
             id="rooms"
             name="rooms"
@@ -100,7 +104,7 @@ export default function CreateHouseRoomsForm(props: { session: any }) {
             helperText={formik.touched.rooms && formik.errors.rooms}
           />
           <TextField
-            sx={{ width: { lg: "50%", xs: "100%" } }}
+            sx={{ width: { lg: "50%", xs: "100%" }, mt: "1rem" }}
             variant="standard"
             id="bathrooms"
             name="bathrooms"
@@ -112,7 +116,7 @@ export default function CreateHouseRoomsForm(props: { session: any }) {
             helperText={formik.touched.bathrooms && formik.errors.bathrooms}
           />
           <TextField
-            sx={{ width: { lg: "50%", xs: "100%" } }}
+            sx={{ width: { lg: "50%", xs: "100%" }, mt: "1rem" }}
             variant="standard"
             id="rentalFee"
             name="rentalFee"
@@ -123,25 +127,33 @@ export default function CreateHouseRoomsForm(props: { session: any }) {
             error={formik.touched.rentalFee && Boolean(formik.errors.rentalFee)}
             helperText={formik.touched.rentalFee && formik.errors.rentalFee}
           />
-          <TextField
-            sx={{ width: { lg: "50%", xs: "100%" } }}
-            variant="standard"
-            id="rentalPeriod"
-            name="rentalPeriod"
-            label="Rental Period"
-            type="text"
-            value={formik.values.rentalPeriod}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.rentalPeriod && Boolean(formik.errors.rentalPeriod)
-            }
-            helperText={
-              formik.touched.rentalPeriod && formik.errors.rentalPeriod
-            }
-          />
+
+          <FormControl sx={{ width: { lg: "50%", xs: "100%" }, mt: "1rem" }}>
+            <InputLabel sx={{ ml: "-1rem" }} id="rentalPeriod">
+              Rental Period
+            </InputLabel>
+            <Select
+              fullWidth
+              labelId="rentalPeriod"
+              variant="standard"
+              name="rentalPeriod"
+              id="rentalPeriod"
+              label="Status"
+              value={formik.values.rentalPeriod}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.rentalPeriod &&
+                Boolean(formik.errors.rentalPeriod)
+              }
+            >
+              <MenuItem value={"daily"}>Daily</MenuItem>
+              <MenuItem value={"weekly"}>Weekly</MenuItem>
+              <MenuItem value={"monthly"}>Monthly</MenuItem>
+            </Select>
+          </FormControl>
 
           <TextField
-            sx={{ width: { lg: "50%", xs: "100%" } }}
+            sx={{ width: { lg: "50%", xs: "100%" }, mt: "1rem" }}
             variant="standard"
             id="securityDeposit"
             name="securityDeposit"
@@ -176,8 +188,10 @@ export default function CreateHouseRoomsForm(props: { session: any }) {
   );
 }
 
-export async function getServerSideProps(context: any) {
-  const session = await getSession(context);
+export async function getServerSideProps({ res, req }: { res: any; req: any }) {
+  const session = await getCookie("session", { res, req });
+
+  console.log(session);
 
   if (!session) {
     return {

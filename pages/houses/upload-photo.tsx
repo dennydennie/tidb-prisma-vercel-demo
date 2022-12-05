@@ -4,8 +4,9 @@ import CommonLayout from "components/Layout";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../../styles/HomePage.module.css";
+import { getCookie } from "cookies-next";
 
-const Home: NextPage = () => {
+const UploadPhoto: NextPage = () => {
   return (
     <>
       <Head>
@@ -27,4 +28,21 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default UploadPhoto;
+
+// export async function getServerSideProps() {
+//   const session = await getCookie("session");
+
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/login",
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: { session },
+//   };
+// }

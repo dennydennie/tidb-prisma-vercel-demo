@@ -1,22 +1,31 @@
 HOUSES
 Your houses
 Edit house
-Create house
-upload house image
 Update house
-other houses
 
 USER
 Profile
 reset
 forgot
-login
-create account
 verify number
 
 SUBSCRIPTION
 subscription
 Dialogs >>> modals or toasts
+
+Chore 
+Implement NextAuth
+
+Done
+HOUSES
+Create house
+Edit houses
+Upload house image
+Other house details
+
+Users
+login
+create account
 
 CHORE
 Add houses to state
